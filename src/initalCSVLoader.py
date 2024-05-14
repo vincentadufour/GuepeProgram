@@ -8,8 +8,13 @@ import os
 
 config = cp.RawConfigParser()
 
-data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data')) #TODO os.file path will need to be functional on Linux + Windows + MacOS
-csv_file_path = os.path.join(data_path, 'MUP_IHP_RY23_P03_V10_DY21_PRVSVC.csv') #TODO Fix file name
+data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'data'))
+bonds_file_path = os.path.join(data_path, 'RS_Flip_Log_Normalized_Bonds.csv')
+items_file_path = os.path.join(data_path, 'RS_Flip_Log_Normalized_Items.csv')
+investments_file_path = os.path.join(data_path, 'RS_Flip_Log_Normalized_Investments.csv')
+
+payouts_file_path = os.path.join(data_path, 'RS_Flip_Log_Normalized_Payouts.csv')
+trades_file_path = os.path.join(data_path, 'RS_Flip_Log_Normalized_Trades.csv')
 
 thisfolder = os.path.dirname(os.path.abspath(__file__))
 initfile = os.path.join(thisfolder, 'config.ini')
@@ -17,13 +22,27 @@ initfile = os.path.join(thisfolder, 'config.ini')
 config.read(initfile)
 params = dict(config.items('db'))
 
+
 conn = psycopg2.connect(**params)
+
+# Bonds Injection
 if conn: 
     print('Connection to Postgres database ' + params['dbname'] + ' was successful!')
     cur = conn.cursor()  
-    with open(csv_file_path, 'r') as f:
+    with open(bonds_file_path, 'r') as f:
         next(f)
-        cur.copy_expert("""COPY Temp_vals FROM STDIN WITH (FORMAT CSV);""", f)
+        cur.copy_expert("""COPY Bonds FROM STDIN WITH (FORMAT CSV);""", f)
+        print('done')
+    conn.commit()
+    conn.close()
+
+# Bonds Injection
+if conn: 
+    print('Connection to Postgres database ' + params['dbname'] + ' was successful!')
+    cur = conn.cursor()  
+    with open(bonds_file_path, 'r') as f:
+        next(f)
+        cur.copy_expert("""COPY Bonds FROM STDIN WITH (FORMAT CSV);""", f)
         print('done')
     conn.commit()
     conn.close()

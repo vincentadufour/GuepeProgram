@@ -35,9 +35,9 @@ The program will facilitate keeping track of test trades, ongoing trades, realiz
 ## ERD Diagram
 ![ERD Diagram](pics/databaseERD.png)
 ## Relational Model
-- **Items**(<u>name</u>: STRING, description: STRING, score: INT)
+- **Items**(<u>name</u>: STRING, description: STRING, score: INT, comment: STRING)
 - **Trade**(<u>id</u>: INT, date: DATE, item_name: STRING, buy_amount: FLOAT, sell_amount: FLOAT, quantity: INT, test_trade_id: INT, comment: STRING)
 - **Investors**(<u>name</u>: STRING)
-- **Investments**(<u>investors_name</u>: STRING, date: DATE, amount: FLOAT, fixed_roi: FLOAT)
-- **Payouts**(<u>investors_name</u>: STRING, <u>date</u>: DATE, principle: FLOAT, interest: FLOAT)
+- **Investments**(<u>investors_name</u>: STRING, date: DATE, amount: FLOAT, fixed_roi: FLOAT, comment: STRING)
+- **Payouts**(<u>investors_name</u>: STRING, <u>date</u>: DATE, principle: FLOAT, interest: FLOAT, comment: STRING)
 - **Bonds**(<u>id</u>: INT, date: DATE, price: FLOAT)

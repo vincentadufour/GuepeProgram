@@ -9,13 +9,11 @@ CREATE DATABASE guepe;
 
 -- table creation
 
-CREATE TABLE Temporary_Table (
-);
-
 CREATE TABLE Items(
     name VARCHAR(50) PRIMARY KEY,
     description VARCHAR(250),
-    score INT
+    score INT,
+    comment VARCHAR(500)
     );
 
 CREATE TABLE Trades(
@@ -35,11 +33,19 @@ CREATE TABLE Investors(
     name VARCHAR(150) PRIMARY KEY
     );
 
+INSERT INTO Investors VALUES
+    ('Nathan Dufour'),
+    ('Ruben Dufour'),
+    ('Dan Dufour'),
+    ('Vincent Dufour'),
+    ('Elie Dufour');
+
 CREATE TABLE Investments(
     investor_name VARCHAR(150),
     date DATE,
     amount FLOAT,
     fixed_roi FLOAT NOT NULL,
+    comment VARCHAR(500),
     PRIMARY KEY (investor_name, date, amount),
     FOREIGN KEY (investor_name) REFERENCES Investors(name)
     );
@@ -49,6 +55,7 @@ CREATE TABLE Payouts(
     date DATE,
     principle FLOAT,
     interest FLOAT,
+    comment VARCHAR(500),
     PRIMARY KEY (investor_name, date),
     FOREIGN KEY (investor_name) REFERENCES Investors(name)
     );

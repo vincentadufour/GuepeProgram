@@ -1,0 +1,59 @@
+erdiagram database
+notation=crowsfoot
+
+entity Trades {
+    id key
+    date
+    item_name
+    buy_amount
+    sell_amount
+    quantity
+    test_trade_id
+    comment
+}
+
+entity Items {
+    id key
+    description
+    score
+}
+
+entity Investors {
+    name key
+}
+
+entity Investments {
+    investor_name key
+    date
+    amount
+    fixed_roi
+}
+
+entity Payouts {
+    investor_name key
+    date
+    principle
+    interest
+}
+
+entity Bonds {
+    id key
+    date
+    price
+}
+
+relationship is_composed_of {
+    Trades [1..N] -> Items [1]
+}
+
+relationship is_test_trade {
+    Trades [1] -> Trades [1]
+}
+
+relationship makes_an {
+    Investors [1] -> Investments [0..N]
+}
+
+relationship takes_a {
+    Investors [1] -> Payouts [0..N]
+}

@@ -14,10 +14,10 @@ The program will facilitate keeping track of test trades, ongoing trades, realiz
 - The program needs to appeal to flippers/merchers
 
 # TODOs
-- [ ] Create a GitHub repo, structure it correctly
-- [ ] Create a README
-- [ ] Design a database model and relationships normalized to 3NF
-- [ ] Create crowfoot's notation for databases
+- [x] Create a GitHub repo, structure it correctly
+- [x] Create a README
+- [x] Design a database model and relationships normalized to 3NF
+- [x] Create crowfoot's notation for databases
 - [ ] Learn more about containers, Docker Desktop, and retrieving the "volume" in PostgreSQL for upload to GitHub or other backup methods
 - [ ] Get a deeper understanding of GE Flipping to better meet needs of users
 	- https://www.ge-tracker.com/landing/osrs-flipping
@@ -30,3 +30,14 @@ The program will facilitate keeping track of test trades, ongoing trades, realiz
 - [ ] Create backend (make a Python script to get my initial database into SQL)
 - [ ] Find a library or other method to generate graphs & reports for user (optionally investors as well)
 - [ ] Publicize software
+
+# Database Design
+## ERD Diagram
+![ERD Diagram](pics/databaseERD.png)
+## Relational Model
+- **Items**(<u>name</u>: STRING, description: STRING, score: INT)
+- **Trade**(<u>id</u>: INT, date: DATE, item_name: STRING, buy_amount: FLOAT, sell_amount: FLOAT, quantity: INT, test_trade_id: INT, comment: STRING)
+- **Investors**(<u>name</u>: STRING)
+- **Investments**(<u>investors_name</u>: STRING, date: DATE, amount: FLOAT, fixed_roi: FLOAT)
+- **Payouts**(<u>investors_name</u>: STRING, <u>date</u>: DATE, principle: FLOAT, interest: FLOAT)
+- **Bonds**(<u>id</u>: INT, date: DATE, price: FLOAT)

@@ -1,7 +1,7 @@
 -- This SQL file initializes the PostgreSQL database
 
 DROP DATABASE guepe;
-DROP USER guepeAdmin;
+DROP USER guepe;
 
 CREATE DATABASE guepe;
 
@@ -33,13 +33,6 @@ CREATE TABLE Investors(
     name VARCHAR(150) PRIMARY KEY
     );
 
-INSERT INTO Investors VALUES
-    ('Nathan Dufour'),
-    ('Ruben Dufour'),
-    ('Dan Dufour'),
-    ('Vincent Dufour'),
-    ('Elie Dufour');
-
 CREATE TABLE Investments(
     investor_name VARCHAR(150),
     date DATE,
@@ -66,8 +59,66 @@ CREATE TABLE Bonds(
     price FLOAT NOT NULL
     );
 
--- testing
+-- creating admin user
+CREATE USER guepe WITH PASSWORD '135791';
+GRANT ALL PRIVILEGES ON TABLE Items to guepe;
+GRANT ALL PRIVILEGES ON TABLE Trades to guepe;
+GRANT ALL PRIVILEGES ON TABLE Investors to guepe;
+GRANT ALL PRIVILEGES ON TABLE Investments to guepe;
+GRANT ALL PRIVILEGES ON TABLE Payouts to guepe;
+GRANT ALL PRIVILEGES ON TABLE Bonds to guepe;
+GRANT ALL PRIVILEGES ON SEQUENCE bonds_id_seq TO guepe;
+GRANT ALL PRIVILEGES ON SEQUENCE trades_id_seq TO guepe;
 
+
+-- if a Trade INSERT includes an item_name that doesn't exist, create the new Item
+CREATE FUNCTION create_new_item() RETURNS TRIGGER
+    LANGUAGE plpgsql
+    AS $$
+        BEGIN
+            IF NOT EXISTS (SELECT 1 FROM Items WHERE name = NEW.item_name)
+                THEN
+                    INSERT INTO Items(name)
+                    VALUES (NEW.item_name);
+            END IF;
+            RETURN NEW;
+        END;
+    $$;
+
+CREATE TRIGGER trade_with_new_item
+    BEFORE INSERT ON Trades
+    FOR EACH ROW
+    EXECUTE PROCEDURE create_new_item();
+
+
+INSERT INTO Trades (date, item_name, buy_amount, sell_amount, quantity, comment) VALUES
+    ('05/14/2024', 'Fake Item', 0, 0, 0, 'fake trade');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- testing
 INSERT INTO Items VALUES
     ('Limpwurt Root', 'The root of a limpwurt plant.'),
     ('Rune Helmet', 'A medium sized helmet.');
@@ -88,7 +139,7 @@ FROM Trades
 WHERE test_trade_id IS NOT NULL;
 
 
---
+-- still broken somehow, should be returning total profit like above minus the test trade per row
 SELECT
     A.date,
     A.item_name,

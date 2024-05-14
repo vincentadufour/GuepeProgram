@@ -16,6 +16,7 @@ entity Items {
     id key
     description
     score
+    comment
 }
 
 entity Investors {
@@ -27,6 +28,7 @@ entity Investments {
     date
     amount
     fixed_roi
+    comment
 }
 
 entity Payouts {
@@ -34,6 +36,7 @@ entity Payouts {
     date
     principle
     interest
+    comment
 }
 
 entity Bonds {
